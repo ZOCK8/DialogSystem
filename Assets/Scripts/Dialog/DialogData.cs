@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class AllNodes
 {
     public List<DialogNodeData> dialogNodeDatas = new List<DialogNodeData>();
+    
 }
 /// <summary>
 /// Can Only Be used for One Sided Dialogs

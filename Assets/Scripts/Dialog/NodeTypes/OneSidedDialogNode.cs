@@ -11,14 +11,16 @@ public class OneSidedDialogNode : DialogueGraphView
     public List<VisualElement> SetDialogNode(Node node)
     {
         mainFunction.RemoveExtensionElements(node);
+        mainFunction.RemovePorts(node, Direction.Input);
+        mainFunction.RemovePorts(node, Direction.Output);
         node.name = NodeTypes.Dialog.ToString();
         List<VisualElement> visualElements = new List<VisualElement>();
 
-            visualElements.Add(visualFunctions.AddText(node, "Time", "0.2", ValueTypes.Float));
-            visualElements.Add(visualFunctions.AddText(node, "DialogText", "Enter", ValueTypes.String));
-            visualElements.Add(visualFunctions.AddPort(node, Direction.Input, "In"));
-            visualElements.Add(visualFunctions.AddPort(node, Direction.Output, "Out"));
-        
+        visualElements.Add(visualFunctions.AddText(node, "Time", "0.2", ValueTypes.Float));
+        visualElements.Add(visualFunctions.AddText(node, "DialogText", "Enter", ValueTypes.String));
+        visualElements.Add(visualFunctions.AddPort(node, Direction.Input, "In"));
+        visualElements.Add(visualFunctions.AddPort(node, Direction.Output, "Out"));
+
         return visualElements;
     }
 }

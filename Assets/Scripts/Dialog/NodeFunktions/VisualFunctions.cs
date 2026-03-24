@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Unity.AppUI.UI;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -25,7 +26,7 @@ public class VisualFunctions : MonoBehaviour
                 Field = new UnityEngine.UIElements.FloatField();
                 break;
             case ValueTypes.Color:
-                Field = new ColorField();
+                Field = new Unity.AppUI.UI.ColorField();
                 Field.AddToClassList("unity-color-field");
                 break;
             default:
@@ -42,7 +43,7 @@ public class VisualFunctions : MonoBehaviour
             textFiled.value = DefaultValue;
         }
 
-        else if (Field is ColorField colorFiled)
+        else if (Field is Unity.AppUI.UI.ColorField colorFiled)
         {
             if (UnityEngine.ColorUtility.TryParseHtmlString(DefaultValue, out Color color))
             {
@@ -85,6 +86,23 @@ public class VisualFunctions : MonoBehaviour
         node.RefreshPorts();
         node.RefreshExpandedState();
         return port;
+    }
+
+    public ObjectField AddAudioField(Node node)
+    {
+        var audioField = new ObjectField("Audio Clip")
+        {
+            objectType = typeof(AudioClip),
+            allowSceneObjects = false
+        };
+
+        audioField.RegisterValueChangedCallback(evt =>
+        {
+            var clip = evt.newValue as AudioClip;
+            Debug.Log("Selected clip: " + clip);
+        });
+        node.extensionContainer.Add(audioField);
+        return audioField;
     }
 
     public DropdownField AddDropDownField(Node node)

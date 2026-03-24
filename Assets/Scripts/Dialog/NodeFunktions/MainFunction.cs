@@ -92,6 +92,8 @@ public class MainFunction : MonoBehaviour
                 multipleChoice.SetDialogNode(node);
                 break;
             case "Audio":
+                AudioNode audioNode = new AudioNode();
+                audioNode.SetDialogNode(node);
                 break;
             case "Action":
                 break;

@@ -10,7 +10,7 @@ public class NodeSearchProvider : ScriptableObject, ISearchWindowProvider
     public Vector2 mousePosition;
     public DialogueGraphView graphView;
     private Vector2 _lastMousePosition;
-
+    
     public List<SearchTreeEntry> CreateSearchTree(SearchWindowContext context)
     {
         return new List<SearchTreeEntry>
