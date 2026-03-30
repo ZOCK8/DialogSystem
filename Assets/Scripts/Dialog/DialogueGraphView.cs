@@ -25,6 +25,7 @@ public class DialogueGraphView : GraphView
 
         DialogSaver.instance.mainFunction = mainFunction;
         DialogSaver.instance.visualFunctions = visualFunctions;
+        DialogSaver.instance.dialogueGraphView = this;
         var searchProvider = ScriptableObject.CreateInstance<NodeSearchProvider>();
         searchProvider.graphView = this;
 
@@ -42,6 +43,16 @@ public class DialogueGraphView : GraphView
             Debug.Log("Gespeicherte Position: " + _lastMousePosition);
             SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), _searchProvider);
         };
+    }
+
+    public void ClearAll()
+    {
+        graphElements.ForEach(elem =>
+        {
+
+            RemoveElement(elem);
+
+        });
     }
 
 

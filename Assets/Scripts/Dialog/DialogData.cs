@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -7,7 +8,7 @@ using UnityEngine.UIElements;
 public class AllNodes
 {
     public List<DialogNodeData> dialogNodeDatas = new List<DialogNodeData>();
-    
+
 }
 /// <summary>
 /// Can Only Be used for One Sided Dialogs
@@ -23,6 +24,9 @@ public class DialogNodeData
     public float width, height;
     public List<FieldSaveData> fields = new List<FieldSaveData>();
     public List<DropDownFieldData> dropDownFields = new List<DropDownFieldData>();
+    public List<ObjectSaveData> objectSaveDatas = new List<ObjectSaveData>();
+    public string NodeID;
+    public List<DialogNodeData> ConnectedNodes;
 }
 
 
@@ -36,6 +40,13 @@ public class FieldSaveData
     public string name;
     public string Value;
     public ValueTypes type;
+}
+[System.Serializable]
+public class ObjectSaveData
+{
+    public string name;
+    public UnityEngine.Object Value;
+    public Type type;
 }
 [System.Serializable]
 public class DropDownFieldData

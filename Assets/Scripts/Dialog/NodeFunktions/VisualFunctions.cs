@@ -1,9 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Unity.AppUI.UI;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.InputSystem.Utilities;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class VisualFunctions : MonoBehaviour
@@ -28,6 +32,9 @@ public class VisualFunctions : MonoBehaviour
             case ValueTypes.Color:
                 Field = new Unity.AppUI.UI.ColorField();
                 Field.AddToClassList("unity-color-field");
+                break;
+            case ValueTypes.Vector3:
+                Field = new Unity.AppUI.UI.Vector3Field();
                 break;
             default:
                 Field = new UnityEngine.UIElements.TextField();
@@ -88,11 +95,11 @@ public class VisualFunctions : MonoBehaviour
         return port;
     }
 
-    public ObjectField AddAudioField(Node node)
+    public ObjectField AddObjectField(Node node, string name, Type objectType, UnityEngine.Object defaultValue = null)
     {
         var audioField = new ObjectField("Audio Clip")
         {
-            objectType = typeof(AudioClip),
+            objectType = objectType,
             allowSceneObjects = false
         };
 
@@ -105,16 +112,42 @@ public class VisualFunctions : MonoBehaviour
         return audioField;
     }
 
-    public DropdownField AddDropDownField(Node node)
+    public DropdownField AddDropDownField(Node node, string name, List<string> Options = null)
     {
         DropdownField dropdownField = new DropdownField
         {
-            value = "Chose",
-            choices = Enum.GetNames(typeof(NodeTypes)).ToList(),
-            name = "DropDownField"
+            name = name,
+            choices = Options ?? Enum.GetNames(typeof(NodeTypes)).ToList(),
+            value = "Chose"
         };
-        dropdownField.RegisterValueChangedCallback(evt => { mainFunction.CheckDropDown(dropdownField, node); });
+
+        dropdownField.RegisterValueChangedCallback(evt =>
+        {
+            mainFunction.CheckDropDown(node);
+        });
+
         node.extensionContainer.Add(dropdownField);
         return dropdownField;
+    }
+
+    public ValueTypes GetValueType(VisualElement visualElement)
+    {
+        switch (visualElement)
+        {
+            case Unity.AppUI.UI.TextField:
+                return ValueTypes.String;
+
+            case Unity.AppUI.UI.FloatField:
+                return ValueTypes.Float;
+
+            case Unity.AppUI.UI.ColorField:
+                return ValueTypes.Color;
+
+            case Unity.AppUI.UI.Vector3Field:
+                return ValueTypes.Vector3;
+            default:
+             return ValueTypes.nothing;
+        }
+
     }
 }

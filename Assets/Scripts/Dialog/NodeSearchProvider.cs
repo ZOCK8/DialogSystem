@@ -35,7 +35,7 @@ public class NodeSearchProvider : ScriptableObject, ISearchWindowProvider
         );
         var dropdown = node.extensionContainer.Q<UnityEngine.UIElements.DropdownField>();
         dropdown.value = nodeType.ToString();
-        graphView.mainFunction.CheckDropDown(dropdown, node);
+        graphView.mainFunction.CheckDropDown(node);
         Debug.Log("Spawn Position: " + mousePosition);
         return true;
     }

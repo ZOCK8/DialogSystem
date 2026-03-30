@@ -34,7 +34,7 @@ public class DialogueEditor : EditorWindow
 
         var loadButton = new ToolbarButton(() =>
         {
-            DialogSaver.instance.LoadData();
+            DialogSaver.instance.LoadData("Assets/Resources/DialogNodes.dat");
         })
         {
             text = "Load"
