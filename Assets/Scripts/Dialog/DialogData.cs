@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 public class AllNodes
 {
     public List<DialogNodeData> dialogNodeDatas = new List<DialogNodeData>();
+    public List<EdgeSaveData> edgeSaveDatas = new List<EdgeSaveData>();
 
 }
 /// <summary>
@@ -63,8 +64,8 @@ public class DropDownFieldData
 [System.Serializable]
 public class EdgeSaveData
 {
-    public string outputNodeGuid;
+    public string outputNodeID;
     public string outputPortName;
-    public string inputNodeGuid;
+    public string inputNodeID;
     public string inputPortName;
 }

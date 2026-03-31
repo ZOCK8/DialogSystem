@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.AppUI.UI;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Edge = UnityEditor.Experimental.GraphView.Edge;
 
 public class MainFunction : MonoBehaviour
 {
@@ -19,13 +21,16 @@ public class MainFunction : MonoBehaviour
     }
 
 
-    public Node CreateNewNode(String Title, Rect rect, NodeTypes nodeTypes)
+    public Node CreateNewNode(string Title, Rect rect, NodeTypes nodeTypes)
     {
-        Node NewNode = new Node
+        NormalNode NewNode = new NormalNode
         {
             name = nodeTypes.ToString(),
-            title = Title
+            title = Title,
+            nodeID = System.Guid.NewGuid().ToString()
         };
+
+        NewNode.userData = NewNode.nodeID;
         visualFunctions.AddDropDownField(NewNode, Title + "DropDown");
         NewNode.SetPosition(rect);
         graphView.AddElement(NewNode);
@@ -271,6 +276,38 @@ public class MainFunction : MonoBehaviour
             nodes.Add(NewNode);
         }
         return nodes;
+    }
+
+    public List<EdgeSaveData> EdgeToEdgeSaveData(List<Edge> edges)
+    {
+        if (edges.Count > 0)
+        {
+
+            List<EdgeSaveData> edgeSaveDatas = new List<EdgeSaveData>();
+            foreach (Edge edge in edges)
+            {
+
+                EdgeSaveData saveData = new EdgeSaveData
+                {
+                    outputNodeID =  edge.output.node.userData as string ?? "X",
+                    outputPortName = edge.output.name,
+                    inputPortName = edge.input.name,
+                    inputNodeID =  edge.input.node.userData as string ?? "X",
+                };
+                edgeSaveDatas.Add(saveData);
+            }
+            if (edgeSaveDatas.Count < 1)
+            {
+                Debug.LogWarning("There was no save data created");
+                return null;
+            }
+            return edgeSaveDatas;
+        }
+        else
+        {
+            Debug.LogWarning("There was no save data created");
+            return null;
+        }
     }
 
 

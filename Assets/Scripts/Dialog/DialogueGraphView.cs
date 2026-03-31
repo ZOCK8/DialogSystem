@@ -23,9 +23,6 @@ public class DialogueGraphView : GraphView
         mainFunction.SetVisualFunctions(visualFunctions);
         visualFunctions.SetMainFunction(mainFunction);
 
-        DialogSaver.instance.mainFunction = mainFunction;
-        DialogSaver.instance.visualFunctions = visualFunctions;
-        DialogSaver.instance.dialogueGraphView = this;
         var searchProvider = ScriptableObject.CreateInstance<NodeSearchProvider>();
         searchProvider.graphView = this;
 

@@ -20,6 +20,7 @@ public class DialogueEditor : EditorWindow
     private void OnEnable()
     {
 
+        var dialogueGraph = new DialogueGraphView();
 
         var toolbar = new Toolbar();
 
@@ -39,11 +40,15 @@ public class DialogueEditor : EditorWindow
         {
             text = "Load"
         };
+
+        DialogSaver.instance.dialogueGraphView = dialogueGraph;
+        DialogSaver.instance.mainFunction = dialogueGraph.mainFunction;
+        DialogSaver.instance.visualFunctions = dialogueGraph.visualFunctions;
+
         toolbar.Add(loadButton);
         toolbar.Add(saveButton);
         rootVisualElement.Add(toolbar);
 
-        var dialogueGraph = new DialogueGraphView();
         dialogueGraph.style.flexGrow = 1;
         rootVisualElement.Add(dialogueGraph);
     }

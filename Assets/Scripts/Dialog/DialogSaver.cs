@@ -1,17 +1,16 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
-using UnityEditor.Localization.Plugins.XLIFF.V20;
-using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class DialogSaver
 {
     private static DialogSaver _instance;
     private AllNodes allNodes = new AllNodes();
+    public List<UnityEditor.Experimental.GraphView.Edge> allEdges = new List<UnityEditor.Experimental.GraphView.Edge>();
     public MainFunction mainFunction;
     public DialogueGraphView dialogueGraphView;
     public VisualFunctions visualFunctions = new VisualFunctions();
@@ -33,8 +32,19 @@ public class DialogSaver
 
     public void SaveGraph()
     {
-        allNodes = new AllNodes();
-        Debug.Log(nodes.Count);
+        if (dialogueGraphView != null)
+        {
+            allEdges = dialogueGraphView.edges
+                .Where(e => e.input != null && e.output != null
+                         && e.input.node != null && e.output.node != null)
+                .ToList();
+
+            Debug.Log($"Gefilterte Edges: {allEdges.Count}");
+        }
+        else
+        {
+            Debug.LogError("There is no DialogGraph");
+        }
 
         List<Node> NodeList = new List<Node>();
         foreach (Nodes x in nodes)
@@ -42,6 +52,7 @@ public class DialogSaver
             NodeList.Add(x.node);
         }
         allNodes.dialogNodeDatas = mainFunction.NodeToDialogNodeData(NodeList);
+        allNodes.edgeSaveDatas = mainFunction.EdgeToEdgeSaveData(allEdges);
         WriteData(allNodes, "Assets/Resources/DialogNodes.dat", true);
     }
 
@@ -56,7 +67,7 @@ public class DialogSaver
         {
             string JsonContent = File.ReadAllText(FullPath);
             JsonUtility.FromJsonOverwrite(JsonContent, allNodes);
-            mainFunction.DialogNodeDataToNode(allNodes.dialogNodeDatas);            
+            mainFunction.DialogNodeDataToNode(allNodes.dialogNodeDatas);
             return allNodes;
         }
 
